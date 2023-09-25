@@ -4,20 +4,20 @@ module register_file(
     input logic [2:0] IR_8_6,
     input logic LD_REG,
     input logic [2:0] SR2,
-    input logic DR_SEL, SR1_SEL,
+    input logic DRMUX,SR1MUX
     input logic [15:0] BUS,
     output logic [15:0] SR1_OUT, SR2_OUT
 );
     logic [2:0] temp_DR;
     logic [2:0] temp_SR1;
     always_comb begin
-        if (DR_SEL == 1) begin
+        if (DRMUX == 1) begin
             temp_DR = IR_11_9;
         end
         else begin
             temp_DR = 3'b111;
         end
-        if (SR1_SEL == 1) begin
+        if (SR1MUX == 1) begin
             temp_SR1 = IR_8_6;
         end
         else begin
