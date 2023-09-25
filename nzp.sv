@@ -1,5 +1,5 @@
 module nzp(
-    input logic Clk,
+    input logic Clk,Reset,
     input logic [15:0] BUS,
     input logic LD_CC,
     output logic [15:0] nzp
@@ -17,8 +17,11 @@ module nzp(
         end
     end
     always_ff @(posedge Clk) begin
-        if(LD_CC == 1'b1) begin
-            nzp <= nzp_temp;
+        if(Reset) begin
+            nzp <= 16'h0000;
+        end
+        else if(LD_CC) begin
+            nzp <= {13'h000,nzp_temp};
         end
     end
 

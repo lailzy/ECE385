@@ -1,5 +1,5 @@
 module MDR(
-    input logic Clk,
+    input logic Clk,Reset,
     input logic MIO_EN,
     input logic [15:0] BUS,
     input logic MDR_In,
@@ -17,8 +17,14 @@ module MDR(
     end
 
     always_ff @(posedge Clk) begin
-        if(LD_MDR == 1) begin
-            MDR <= temp;
+        
+        if(Reset == 1) begin
+            MDR <= 0;
+        end
+        else begin
+            if(LD_MDR == 1) begin
+                MDR <= temp;
+            end
         end
     end
 
