@@ -6,7 +6,7 @@ module BUS(
     input GatePC,
     input [15:0] PC,
     input GateMARMUX,
-    input [15:0] MARMUX,
+    input [15:0] MARMUX,//not same meaning as in slc3.sv
     output [15:0] BUS
     );
     logic [3:0] temp_control;
