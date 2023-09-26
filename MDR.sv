@@ -2,7 +2,7 @@ module MDR(
     input logic Clk,Reset,
     input logic MIO_EN,
     input logic [15:0] BUS,
-    input logic MDR_In,
+    input logic [15:0] MDR_In,
     input logic LD_MDR
     output logic [15:0] MDR
 );
