@@ -59,6 +59,8 @@ module ISDU (   input logic         Clk,
 						PauseIR2, 
 						S_18, 
 						S_33_1,
+						S_33_2,
+						S_33_3,
 						S_35, 
 						S_32, 
 						S_01}   State, Next_state;   // Internal state logic
@@ -110,7 +112,12 @@ module ISDU (   input logic         Clk,
 					Next_state = S_18;
 			S_18 : 
 				Next_state = S_33_1; //Notice that we usually have 'R' here, but you will need to add extra states instead 
-			S_33_1 :                 //e.g. S_33_2, etc. How many? As a hint, note that the BRAM is synchronous, in addition, 
+			S_33_1:
+				Next_state = S_33_2;
+			S_33_2 :
+				Next_state = S_33_3;// add two more states.
+			
+			S_33_3 :                 //e.g. S_33_2, etc. How many? As a hint, note that the BRAM is synchronous, in addition, 
 				Next_state = S_35;   //it has an additional output register. 
 			S_35 : 
 				Next_state = S_32;
@@ -156,7 +163,9 @@ module ISDU (   input logic         Clk,
 					Mem_OE = 1'b0;
 					Mem_WE = 1'b0;
 				end
-			S_33_1 : 
+			S_33_1 :;
+			S_33_2 :;
+			S_33_3 : 
 				Mem_OE = 1'b1;
 			S_35 : 
 				begin 

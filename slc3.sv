@@ -71,7 +71,23 @@ assign MIO_EN = OE;
 
 // Instantiate the rest of your modules here according to the block diagram of the SLC-3
 // including your register file, ALU, etc..
-
+data_path data_path_w1(
+    .Clk(Clk), 
+    .Reset(Reset),
+    .MIO_EN(MIO_EN),
+    .BUS(BUS),
+    .MDR_IN(MDR_In),
+    .LD_MDR(LD_MDR),
+    .LD_MAR(LD_MAR),
+    .LD_IR(LD_IR),
+    .LD_PC(LD_PC),
+    .GateMDR(GateMDR),
+    .GatePC(GatePC),
+    .MAR(MAR),
+    .MDR(MDR),
+    .IR(IR),
+    .PC(PC)
+);
 
 
 // Our I/O controller (note, this plugs into MDR/MAR)
