@@ -3,7 +3,7 @@ module MDR(
     input logic MIO_EN,
     input logic [15:0] BUS,
     input logic [15:0] MDR_In,
-    input logic LD_MDR
+    input logic LD_MDR,
     output logic [15:0] MDR
 );
     logic [15:0] temp;

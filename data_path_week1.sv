@@ -29,7 +29,7 @@ MAR mar(.Clk(Clk),
 
 PC pc(.Clk(Clk),
     .Reset(Reset),
-    .PCMUX(2'b10)//used for only pc <= pc + 1
+    .PCMUX(2'b10),//used for only pc <= pc + 1
     .LD_PC(LD_PC),
     .BUS(BUS),//not used in week 1
     .ADDR_OUT(16'h0000),//not used in week 1
