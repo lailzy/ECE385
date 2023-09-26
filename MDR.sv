@@ -9,10 +9,10 @@ module MDR(
     logic [15:0] temp;
     always_comb begin
         if(MIO_EN == 1) begin
-            temp = BUS;
+            temp = MDR_In;
         end
         else begin
-            temp = MDR_In;
+            temp = BUS;
         end
     end
 

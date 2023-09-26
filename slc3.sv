@@ -76,7 +76,7 @@ data_path data_path_w1(
     .Reset(Reset),
     .MIO_EN(MIO_EN),
     .BUS(BUS),
-    .MDR_IN(MDR_In),
+    .MDR_In(MDR_In),
     .LD_MDR(LD_MDR),
     .LD_MAR(LD_MAR),
     .LD_IR(LD_IR),
@@ -98,7 +98,6 @@ Mem2IO memory_subsystem(
     .Data_from_CPU(MDR), .Data_to_CPU(MDR_In),
     .Data_from_SRAM(Data_from_SRAM), .Data_to_SRAM(Data_to_SRAM)
 );
-
 // State machine, you need to fill in the code here as well
 ISDU state_controller(
 	.*, .Reset(Reset), .Run(Run), .Continue(Continue),

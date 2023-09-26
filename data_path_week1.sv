@@ -2,7 +2,7 @@ module data_path(
     input logic Clk,Reset,
     input logic MIO_EN,
     output logic [15:0] BUS,
-    input logic [15:0] MDR_IN,
+    input logic [15:0] MDR_In,
     input logic LD_MDR,LD_MAR,LD_IR,LD_PC,
     input logic GateMDR,GatePC,
     output logic [15:0] MAR,MDR,IR,PC
@@ -15,7 +15,7 @@ MDR mdr(.Clk(Clk),
     .Reset(Reset),
     .MIO_EN(MIO_EN),
     .BUS(BUS),
-    .MDR_IN(MDR_IN),
+    .MDR_In(MDR_In),
     .LD_MDR(LD_MDR),
     .MDR(MDR)
 );

@@ -1,13 +1,13 @@
 module BUS(
-    input GateMDR,
-    input [15:0] MDR,
-    input GateALU,
-    input [15:0] ALU,
-    input GatePC,
-    input [15:0] PC,
-    input GateMARMUX,
-    input [15:0] MARMUX,//not same meaning as in slc3.sv
-    output [15:0] BUS
+    input logic GateMDR,
+    input logic [15:0] MDR,
+    input logic GateALU,
+    input logic [15:0] ALU,
+    input logic GatePC,
+    input logic [15:0] PC,
+    input logic GateMARMUX,
+    input logic [15:0] MARMUX,//not same meaning as in slc3.sv
+    output logic [15:0] BUS
     );
     logic [3:0] temp_control;
     assign temp_control = {GateMARMUX, GatePC, GateALU, GateMDR};
