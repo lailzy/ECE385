@@ -17,6 +17,7 @@ module BUS(
             4'b0100: BUS = PC;
             4'b0010: BUS = ALU;
             4'b0001: BUS = MDR;
+            4'b0000: BUS = 16'bx;
             default: BUS = 16'b0;
         endcase
     end
