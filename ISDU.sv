@@ -120,7 +120,7 @@ module ISDU (   input logic         Clk,
 			S_33_3 :                 //e.g. S_33_2, etc. How many? As a hint, note that the BRAM is synchronous, in addition, 
 				Next_state = S_35;   //it has an additional output register. 
 			S_35 : 
-				Next_state = S_32;
+				Next_state = PauseIR1;
 			// PauseIR1 and PauseIR2 are only for Week 1 such that TAs can see 
 			// the values in IR.
 			PauseIR1 : 
@@ -136,7 +136,7 @@ module ISDU (   input logic         Clk,
 			S_32 : 
 				case (Opcode)
 					4'b0001 : 
-						Next_state = PauseIR1;
+						Next_state = S_01;
 					
 					// You need to finish the rest of opcodes.....
 
