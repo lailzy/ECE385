@@ -136,7 +136,7 @@ module ISDU (   input logic         Clk,
 			S_32 : 
 				case (Opcode)
 					4'b0001 : 
-						Next_state = S_01;
+						Next_state = PauseIR1;
 					
 					// You need to finish the rest of opcodes.....
 
