@@ -1,5 +1,5 @@
 module data_path(
-        input logic Clk,Reset,
+    input logic Clk,Reset,
     input logic MIO_EN,
     output logic [15:0] BUS,
     input logic [15:0] MDR_In,
