@@ -61,9 +61,27 @@ module ISDU (   input logic         Clk,
 						S_33_1,
 						S_33_2,
 						S_33_3,
-						S_35, 
-						S_32, 
-						S_01}   State, Next_state;   // Internal state logic
+						S_35,// last step of fetch
+						S_32,//load ben 
+						S_01,//add
+						S_05,//and
+						S_09,//not
+						S_06,//ldr_1
+						S_25,//ldr_2 MAYBE NEED MORE STATES
+						S_25_1,
+						S_25_2,
+						S_27,//ldr_3
+						S_7,//str_1
+						S_23,//str_2
+						S_16,//str_3 maybe need more states
+						S_16_1,
+						S_16_2,
+						S_04,//jsr_1
+						S_21,//jsr_2
+						S_12,//jmp
+						S_00,//br
+						S_22,//br1
+						}   State, Next_state;   // Internal state logic
 		
 	always_ff @ (posedge Clk)
 	begin
@@ -95,7 +113,7 @@ module ISDU (   input logic         Clk,
 		 
 		ALUK = 2'b00;
 		 
-		PCMUX = 2'b00;
+		PCMUX = 2'b10;//changed because my default increase is 10
 		DRMUX = 1'b0;
 		SR1MUX = 1'b0;
 		SR2MUX = 1'b0;
@@ -137,17 +155,70 @@ module ISDU (   input logic         Clk,
 				case (Opcode)
 					4'b0001 : 
 						Next_state = S_01;
-					
-					// You need to finish the rest of opcodes.....
-
+					4'b0101 :
+						Next_state = S_05;
+					4'b1001 :
+						Next_state = S_09;
+					4'b0110 :
+						Next_state = S_06;
+					4'b0111 :
+						Next_state = S_7;
+					4'b0100 :
+						Next_state = S_04;
+					4'b1100 :
+						Next_state = S_12;
+					4'b0000 :
+						Next_state = S_00;
+					4'b1101 :
+						Next_state = PauseIR1;//pause				    					
+					// You need to finish the rest of opcodes....
 					default : 
 						Next_state = S_18;
 				endcase
-			S_01 : 
-				Next_state = S_18;
-			// You need to finish the rest of states.....
-			
-			default :;
+			S_01:
+			    Next_state = S_18;
+			S_05:
+			    Next_state = S_18;
+			S_09:
+			    Next_state = S_18;
+			S_06:
+			    Next_state = S_25;
+			S_25:
+		        Next_state = S_25_1;
+			S_25_1:
+			    Next_state = S_25_2;
+			S_25_2:
+			    Next_state = S_27;
+			S_27:
+			    Next_state = S_18;
+			S_7:
+			    Next_state = S_23;
+			S_23:
+			    Next_state = S_16;
+			S_16:
+			    Next_state = S_16_1;
+			S_16_1:	
+			    Next_state = S_16_2;
+			S_16_2:
+			    Next_state = S_18;
+			S_04:
+			    Next_state = S_21;
+			S_21:
+			    Next_state = S_18;
+			S_12:
+			    Next_state = S_18;
+			S_00:
+			    case(BEN)
+			        1'b1:
+			            Next_state = S_22;
+					1'b0:
+                        Next_state = S_18;					
+			        default:
+			            Next_state = S_18;
+	            endcase
+			S_22:
+			    Next_state = S_18;			
+			default : Next_state = S_18;//should not happen
 
 		endcase
 		
@@ -158,7 +229,7 @@ module ISDU (   input logic         Clk,
 				begin 
 					GatePC = 1'b1;
 					LD_MAR = 1'b1;
-					PCMUX = 2'b00;
+					PCMUX = 2'b10;// changed because my default increase is 10 
 					LD_PC = 1'b1;
 					Mem_OE = 1'b0;
 					Mem_WE = 1'b0;
@@ -184,15 +255,114 @@ module ISDU (   input logic         Clk,
 			S_32 : 
 				LD_BEN = 1'b1;
 			S_01 : 
-				begin 
-					SR2MUX = IR_5;
+				begin
+					DRMUX = 1'b1;
+					SR1MUX = 1'b1;; 
+					//SR2MUX = IR_5;
+					SR2MUX = ~IR_5;//SHOULD SET TO ~IR_5, 
+					//because in datapath, the left side is 0
 					ALUK = 2'b00;
 					GateALU = 1'b1;
 					LD_REG = 1'b1;
-					// incomplete...
+					LD_CC = 1'b1;
 				end
+            S_05 : 
+				begin
+					DRMUX = 1'b1;
+					SR1MUX = 1'b1;
+					SR2MUX = ~IR_5;//reason same as above
+					ALUK = 2'b01;
+					GateALU = 1'b1;
+					LD_REG = 1'b1;
+					LD_CC = 1'b1;
+				end
+			S_09 :
+				begin
+					DRMUX = 1'b1;
+					SR1MUX = 1'b1;
+					ALUK = 2'b10;
+					GateALU = 1'b1;
+					LD_REG = 1'b1;
+					LD_CC = 1'b1;
+				end
+			S_06 : // mar = baser + offset6
+				begin
+					SR1MUX = 1'b1;
+					ADDR1MUX = 1'b0;//load from sr1
+					ADDR2MUX = 2'b01;//load from sext(ir[5:0])
+					LD_MAR = 1'b1;//load mar
+				end
+			S_25 :; // mdr = mem[mar]
+			S_25_1 :
+			    Mem_OE = 1'b1;
+			S_25_2 :
+			    begin
+			        LD_MDR = 1'b1;
+			        Mem_OE = 1'b1;
+			    end
+			S_27: // DR = MDR
+			    begin
+			        DRMUX = 1'b1;
+			        LD_REG = 1'b1;
+					GateMDR = 1'b1;
+					LD_CC = 1'b1;
+			    end
+			S_7 : // mar = baser + offset6
+			    begin
+					SR1MUX = 1'b1;
+					ADDR1MUX = 1'b0;//load from sr1
+					ADDR2MUX = 2'b01;//load from sext(ir[5:0])
+					LD_MAR = 1'b1;//load mar
+				end
+			S_23 :// mdr =sr
+			    begin
+			        SR1MUX = 1'b0;//SR
+					ALUK = 2'b11;//COPY SR1
+			        GateALU = 1'b1;//ALU BUS
+			        LD_MDR = 1'b1;//LOAD MDR
+			    end
+			S_16 :;
+			S_16_1 :
+			    Mem_WE = 1'b1;
+			S_16_2 :
+			    mem_WE = 1'b1;
+			S_04 : // r7 = pc
+			    begin
+			        DRMUX = 1'b0;
+			        GatePC = 1'b1;
+			        LD_REG = 1'b1;
+			    end
+			S_21 : // pc = pc + offset11
+			    begin
+					ADDR1MUX = 1'b1;//load from pc
+					ADDR2MUX = 2'b00;//load from sext(ir[10:0])
+					PCMUX = 2'b01;//load from pc
+					LD_PC = 1'b1;//load pc
+				end
+			S_12 : // pc = baser
+			    begin
+			        SR1MUX = 1'b1;//load from sr1
+                    ALUK = 2'b11;//copy
+					GateALU = 1'b1;//ALU BUS
+					PCMUX = 2'b00;//load from pc
+					LD_PC = 1'b1;//load pc
+			    end
+			S_00 :; // br
+			S_22 : // pc = pc + offset9
+			    begin
+					ADDR1MUX = 1'b1;//load from pc
+					ADDR2MUX = 2'b01;//load from sext(ir[8:0])
+					PCMUX = 2'b01;//load from pc
+					LD_PC = 1'b1;//load pc
+			    end
 
-			// You need to finish the rest of states..... 
+
+
+
+
+
+
+
 
 			default : ;
 		endcase

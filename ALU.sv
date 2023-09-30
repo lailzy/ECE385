@@ -20,7 +20,7 @@ module ALU(
             2'b00: ALU = SR1_OUT + temp_SR2;
             2'b01: ALU = SR1_OUT & temp_SR2;
             2'b10: ALU = ~SR1_OUT;
-            2'b11: ALU = 16'hffff;
+            2'b11: ALU = SR1_OUT;
             default: ALU = 16'h0000;
         endcase
     end
