@@ -12,7 +12,7 @@
 //      UIUC ECE Department                                              --
 //-------------------------------------------------------------------------
 // Requires SLC3_2.sv
-//`include "SLC3_2.sv"
+`include "SLC3_2.sv"
 
 import SLC3_2::*;
 
@@ -138,11 +138,11 @@ task memory_contents(output logic[15:0] mem_array[0:size-1]);
    mem_array[  95 ] =    opLDR(R1, R0, inSW)      ;       
    mem_array[  96 ] =    opBR(z, -3)              ;       // If 0, retry
    mem_array[  97 ] =    opDEC(R1)                ;       
-   mem_array[  98 ] =    opBR(np, 2)              ;       // if selection wasn't 1, jump overï¿½
+   mem_array[  98 ] =    opBR(np, 2)              ;       // if selection wasn't 1, jump overï¿?
    mem_array[  99 ] =    opJSR(9)                 ;       //   ...call to entry function
    mem_array[ 100 ] =    opBR(nzp, -7)            ;       
    mem_array[ 101 ] =    opDEC(R1)                ;       
-   mem_array[ 102 ] =    opBR(np, 2)              ;       // if selection wasn't 2, jump overï¿½
+   mem_array[ 102 ] =    opBR(np, 2)              ;       // if selection wasn't 2, jump overï¿?
    mem_array[ 103 ] =    opJSR(15)                ;       //   ...call to sort function
    mem_array[ 104 ] =    opBR(nzp, -11)           ;       
    mem_array[ 105 ] =    opDEC(R1)                ;       

@@ -40,13 +40,21 @@ logic SR2MUX, ADDR1MUX, MARMUX;
 logic BEN, MIO_EN, DRMUX, SR1MUX;
 logic [1:0] PCMUX, ADDR2MUX, ALUK;
 logic [15:0] MDR_In;
-logic [15:0] MAR, MDR, IR;
+logic [15:0] MAR, MDR, IR, PC,BUS;
 logic [3:0] hex_4[3:0]; 
+logic [15:0] nzp;
 
+//HexDriver HexA (
+//    .clk(Clk),
+//    .reset(Reset),
+//    .in({hex_4[3][3:0],  hex_4[2][3:0], hex_4[1][3:0], hex_4[0][3:0]}),
+//    .hex_seg(hex_seg),
+//    .hex_grid(hex_grid)
+//);
 HexDriver HexA (
     .clk(Clk),
     .reset(Reset),
-    .in({hex_4[3][3:0],  hex_4[2][3:0], hex_4[1][3:0], hex_4[0][3:0]}),
+    .in({IR[15:12],IR[11:8],IR[7:4],IR[3:0]}),
     .hex_seg(hex_seg),
     .hex_grid(hex_grid)
 );
@@ -58,7 +66,7 @@ HexDriver HexA (
 HexDriver HexB (
     .clk(Clk),
     .reset(Reset),
-    .in(),
+    .in({PC[15:12],PC[11:8],PC[7:4],PC[3:0]}),
     .hex_seg(hex_segB),
     .hex_grid(hex_gridB)
 );
@@ -71,23 +79,7 @@ assign MIO_EN = OE;
 
 // Instantiate the rest of your modules here according to the block diagram of the SLC-3
 // including your register file, ALU, etc..
-data_path data_path_w1(
-    .Clk(Clk), 
-    .Reset(Reset),
-    .MIO_EN(MIO_EN),
-    .BUS(BUS),
-    .MDR_In(MDR_In),
-    .LD_MDR(LD_MDR),
-    .LD_MAR(LD_MAR),
-    .LD_IR(LD_IR),
-    .LD_PC(LD_PC),
-    .GateMDR(GateMDR),
-    .GatePC(GatePC),
-    .MAR(MAR),
-    .MDR(MDR),
-    .IR(IR),
-    .PC(PC)
-);
+data_path data_path_w2(.*);
 
 
 // Our I/O controller (note, this plugs into MDR/MAR)
@@ -98,6 +90,7 @@ Mem2IO memory_subsystem(
     .Data_from_CPU(MDR), .Data_to_CPU(MDR_In),
     .Data_from_SRAM(Data_from_SRAM), .Data_to_SRAM(Data_to_SRAM)
 );
+
 // State machine, you need to fill in the code here as well
 ISDU state_controller(
 	.*, .Reset(Reset), .Run(Run), .Continue(Continue),

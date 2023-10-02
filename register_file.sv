@@ -4,7 +4,7 @@ module register_file(
     input logic [2:0] IR_8_6,
     input logic LD_REG,
     input logic [2:0] SR2,
-    input logic DRMUX,SR1MUX
+    input logic DRMUX,SR1MUX,
     input logic [15:0] BUS,
     output logic [15:0] SR1_OUT, SR2_OUT
 );
@@ -26,7 +26,7 @@ module register_file(
     end
     logic [15:0]  R0,R1,R2,R3,R4,R5,R6,R7;
     //load DR
-    always_ff @(posedge Clk, posedge Reset) begin
+    always_ff @(posedge Clk) begin
         if (Reset) begin
             R0 <= 16'b0;
             R1 <= 16'b0;

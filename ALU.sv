@@ -3,8 +3,8 @@ module ALU(
     input logic [15:0] SR2_OUT,
     input logic [15:0] SEXT_4,
     input logic SR2MUX,
-    input logic ALUK,
-    output logic [15:0] ALU,
+    input logic [1:0] ALUK,
+    output logic [15:0] ALU
 );
     logic [15:0] temp_SR2;
     always_comb begin

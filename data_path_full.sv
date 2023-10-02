@@ -3,11 +3,13 @@ module data_path(
     input logic MIO_EN,
     output logic [15:0] BUS,
     input logic [15:0] MDR_In,
-    input logic DRMUX,SR1_MUX,SR2MUX,ADDR1MUX,
+    input logic DRMUX,SR1MUX,SR2MUX,ADDR1MUX,
     input logic [1:0] PCMUX, ALUK,ADDR2MUX,
-    input logic LD_MDR,LD_MAR,LD_IR,LD_PC,LD_REG,LD_CC,LD_BEN
+    input logic LD_MDR,LD_MAR,LD_IR,LD_PC,LD_REG,LD_CC,LD_BEN,LD_LED,
     input logic GateMDR,GatePC,GateALU,GateMARMUX,
-    output logic [15:0] MAR,MDR,IR,PC,BEN
+    output logic [15:0] MAR,MDR,IR,PC,LED,
+    output logic BEN,
+    output logic [15:0] nzp
 
 );
     logic [15:0] ADDR_OUT , ALU;
@@ -76,10 +78,10 @@ module data_path(
         .Reset(Reset),
         .IR_11_9(IR[11:9]),
         .IR_8_6(IR[8:6]),
-        .LD_REG(LD_REG)
+        .LD_REG(LD_REG),
         .SR2(IR[2:0]),//THIS IS THE PLACE OF SR2
         .DRMUX(DRMUX),
-        .SR1MUX(SR1_MUX),
+        .SR1MUX(SR1MUX),
         .BUS(BUS),
         .SR1_OUT(SR1_OUT),
         .SR2_OUT(SR2_OUT)
@@ -94,7 +96,7 @@ module data_path(
         .ADDR1MUX(ADDR1MUX),
         .ADDR_OUT(ADDR_OUT)
     );
-    nzp nzp(
+    nzp nzp1(
         .Clk(Clk),
         .Reset(Reset),
         .BUS(BUS),
@@ -108,5 +110,12 @@ module data_path(
         .IR_11_9(IR[11:9]),
         .nzp_2_0(nzp[2:0]),
         .BEN(BEN)
+    );
+    LED led(.Clk(Clk),
+            .Reset(Reset),
+            .IR_11_0(IR[11:0]),
+            .LD_LED(LD_LED),
+            .LED(LED)
+            
     );
 endmodule

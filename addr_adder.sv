@@ -12,9 +12,9 @@ module addr_adder(
     logic [15:0] temp_addr2;
     always_comb begin
         case(ADDR1MUX)
-            1'b1: ADDR_OUT = PC;
-            1'b0: ADDR_OUT = SR1_OUT;
-            default: ADDR_OUT = 16'hffff;
+            1'b1: temp_addr1 = PC;
+            1'b0: temp_addr1 = SR1_OUT;
+            default: temp_addr1 = 16'hffff;
         endcase
         case(ADDR2MUX)
             2'b00: temp_addr2 = SEXT_10;
@@ -24,5 +24,5 @@ module addr_adder(
             default: temp_addr2 = 16'hffff;
         endcase
     end
-    assign ADDR_OUT = ADDR_OUT + temp_addr2;
+    assign ADDR_OUT = temp_addr1 + temp_addr2;
 endmodule

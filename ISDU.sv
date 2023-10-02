@@ -80,7 +80,7 @@ module ISDU (   input logic         Clk,
 						S_21,//jsr_2
 						S_12,//jmp
 						S_00,//br
-						S_22,//br1
+						S_22//br1
 						}   State, Next_state;   // Internal state logic
 		
 	always_ff @ (posedge Clk)
@@ -138,7 +138,7 @@ module ISDU (   input logic         Clk,
 			S_33_3 :                 //e.g. S_33_2, etc. How many? As a hint, note that the BRAM is synchronous, in addition, 
 				Next_state = S_35;   //it has an additional output register. 
 			S_35 : 
-				Next_state = PauseIR1;
+				Next_state = S_32;
 			// PauseIR1 and PauseIR2 are only for Week 1 such that TAs can see 
 			// the values in IR.
 			PauseIR1 : 
@@ -289,7 +289,8 @@ module ISDU (   input logic         Clk,
 				begin
 					SR1MUX = 1'b1;
 					ADDR1MUX = 1'b0;//load from sr1
-					ADDR2MUX = 2'b01;//load from sext(ir[5:0])
+					ADDR2MUX = 2'b10;//load from sext(ir[5:0])
+					GateMARMUX = 1'b1;
 					LD_MAR = 1'b1;//load mar
 				end
 			S_25 :; // mdr = mem[mar]
@@ -311,7 +312,7 @@ module ISDU (   input logic         Clk,
 			    begin
 					SR1MUX = 1'b1;
 					ADDR1MUX = 1'b0;//load from sr1
-					ADDR2MUX = 2'b01;//load from sext(ir[5:0])
+					ADDR2MUX = 2'b10;//load from sext(ir[5:0])
 					LD_MAR = 1'b1;//load mar
 				end
 			S_23 :// mdr =sr
@@ -325,7 +326,7 @@ module ISDU (   input logic         Clk,
 			S_16_1 :
 			    Mem_WE = 1'b1;
 			S_16_2 :
-			    mem_WE = 1'b1;
+			    Mem_WE = 1'b1;
 			S_04 : // r7 = pc
 			    begin
 			        DRMUX = 1'b0;
@@ -341,7 +342,7 @@ module ISDU (   input logic         Clk,
 				end
 			S_12 : // pc = baser
 			    begin
-			        SR1MUX = 1'b1;//load from sr1
+			        SR1MUX = 1'b1;//load from br
                     ALUK = 2'b11;//copy
 					GateALU = 1'b1;//ALU BUS
 					PCMUX = 2'b00;//load from pc
