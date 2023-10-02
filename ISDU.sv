@@ -299,7 +299,7 @@ module ISDU (   input logic         Clk,
 			S_25_2 :
 			    begin
 			        LD_MDR = 1'b1;
-			        Mem_OE = 1'b1;
+			        Mem_OE = 1'b1; // need modify
 			    end
 			S_27: // DR = MDR
 			    begin

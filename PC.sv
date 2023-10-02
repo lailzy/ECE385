@@ -18,7 +18,7 @@ module PC(
             default: PC_temp = 16'hfffe;//should not appear
         endcase
     end
-    always_ff @(posedge Clk, posedge Reset) begin
+    always_ff @(posedge Clk) begin
         if(Reset)
             PC <= 0;
         else if(LD_PC)
