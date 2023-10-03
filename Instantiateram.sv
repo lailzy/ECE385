@@ -93,7 +93,8 @@ module Instantiateram( input Reset,
 
 			16'd0: data =   opCLR(R0)                ;       // Clear the register so it can be used as a base
 			16'd1: data =    opLDR(R1, R0, inSW)      ;       // Load switches
-			16'd2: data =    opJMP(R1)                ;       // Jump to the start of a program
+			16'd2: data =    opJMP(R1);  
+            //16'd2: data =    opCLR(R0)  ;       // Jump to the start of a program
 			
 			
 																					// Basic I/O test 1

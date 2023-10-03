@@ -6,8 +6,8 @@ timeunit 10ns;
 timeprecision 1ns;
 
    // Internal variables
-	logic [15:0] SW, PC, MAR, MDR, IR;
 	logic Clk, Reset, Run, Continue;
+	logic [15:0] SW;
 	logic [15:0] LED;
 	logic [7:0] hex_seg,hex_segB;
     logic [3:0] hex_grid,hex_gridB;
@@ -45,28 +45,32 @@ timeprecision 1ns;
    always begin : CLOCK_GENERATION 
 		#1 Clk = ~Clk;
    end
+   
+      always begin : CLOCK_GENERATIO
+		#5 Continue = ~Continue;
+   end
 
 	// initialize clock signal 
 	initial begin: CLOCK_INITIALIZATION 
 		Clk = 0;
+		Continue = 0;
    end
 	
 	// begin testing
 	initial begin: TEST_VECTORS
 	// give a dummy number for switch (3 here) and run
+	    SW = 16'h0003;
 		Reset = 1;
 		#2 Reset = 0;
-		Continue = 1;
+		#2 Run = 1;
+		#10
 		Run = 0;
-	   SW = 16'd0074;
 	//#10 Reset = 1;
-	#2 Run = 1;
 	
 	// run again to see if fetch automatically halts
-	#10 Continue = 0;
-	#5 Continue = 1;
-	   SW = 16'd0075;
-	#5 Continue = 0;
+	//#10 Continue = 0;
+//	#5 Continue = 1;
+//	#5 Continue = 0;
 	
 
 	end

@@ -9,7 +9,8 @@ module data_path(
     input logic GateMDR,GatePC,GateALU,GateMARMUX,
     output logic [15:0] MAR,MDR,IR,PC,LED,
     output logic BEN,
-    output logic [15:0] nzp
+    output logic [15:0] nzp,
+    output logic [15:0] R1
 
 );
     logic [15:0] ADDR_OUT , ALU;
@@ -84,7 +85,8 @@ module data_path(
         .SR1MUX(SR1MUX),
         .BUS(BUS),
         .SR1_OUT(SR1_OUT),
-        .SR2_OUT(SR2_OUT)
+        .SR2_OUT(SR2_OUT),
+        .R1(R1)
     );
     addr_adder addr(
         .SEXT_10(SEXT_10),
@@ -113,7 +115,7 @@ module data_path(
     );
     LED led(.Clk(Clk),
             .Reset(Reset),
-            .IR_11_0(IR[11:0]),
+            .IR(IR),
             .LD_LED(LD_LED),
             .LED(LED)
             

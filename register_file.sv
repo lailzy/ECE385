@@ -6,7 +6,8 @@ module register_file(
     input logic [2:0] SR2,
     input logic DRMUX,SR1MUX,
     input logic [15:0] BUS,
-    output logic [15:0] SR1_OUT, SR2_OUT
+    output logic [15:0] SR1_OUT, SR2_OUT,
+    output logic [15:0] R1
 );
     logic [2:0] temp_DR;
     logic [2:0] temp_SR1;
@@ -24,7 +25,7 @@ module register_file(
             temp_SR1 = IR_11_9;
         end
     end
-    logic [15:0]  R0,R1,R2,R3,R4,R5,R6,R7;
+    logic [15:0]  R0,R2,R3,R4,R5,R6,R7;
     //load DR
     always_ff @(posedge Clk) begin
         if (Reset) begin
@@ -47,7 +48,7 @@ module register_file(
                 3'b101: R5 <= BUS;
                 3'b110: R6 <= BUS;
                 3'b111: R7 <= BUS;
-                default:R7 <= BUS;
+                //default:R7 <= BUS;
             endcase
         end
     end
@@ -62,7 +63,7 @@ module register_file(
             3'b101: SR1_OUT = R5;
             3'b110: SR1_OUT = R6;
             3'b111: SR1_OUT = R7;
-            default:SR1_OUT = 16'b0;
+            //default:SR1_OUT = 16'b0;
         endcase
         case (SR2)
             3'b000: SR2_OUT = R0;
@@ -73,7 +74,7 @@ module register_file(
             3'b101: SR2_OUT = R5;
             3'b110: SR2_OUT = R6;
             3'b111: SR2_OUT = R7;
-            default:SR2_OUT = 16'b0;
+            //default:SR2_OUT = 16'b0;
         endcase
     end
 endmodule
